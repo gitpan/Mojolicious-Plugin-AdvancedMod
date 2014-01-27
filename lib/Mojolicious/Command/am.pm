@@ -36,24 +36,19 @@ sub run {
   elsif ( $cmd eq 'g' ) {
     my $op = shift || '';
 
-    if ( $op eq 'controller' ) {
-      $self->new_controller( @_ );
-    }
-    elsif ( $op eq 'model' ) {
-      $self->new_model( @_ );
-    }
-    elsif ( $op eq 'resource' ) {
-      $self->new_resource( @_ );
-    }
-    else {
-      die "Usage: am g [controller|model|resource]";
-    }
+    if    ( $op eq 'controller' ) { $self->new_controller( @_ ); }
+    elsif ( $op eq 'model' )      { $self->new_model( @_ ); }
+    elsif ( $op eq 'resource' )   { $self->new_resource( @_ ); }
+    else                          { die "Usage: am g [controller|model|resource]"; }
   }
   elsif ( $cmd eq 'l' ) {
     print "Licenses:\n";
     foreach my $n ( sort { $a cmp $b } @licenses ) {
       print " $n\n";
     }
+  }
+  else {
+    # look am folder and autoload && exec code
   }
 }
 
@@ -216,7 +211,8 @@ EOF
 
     foreach my $action ( @{ $opts{actions} } ) {
       next if $action =~ /(create|update|destroy)/;
-      $self->write_rel_file( "$name/templates/" . lc( $resource ) . "/$action.html.$opts{handler}", "It's action #$action" );
+      $self->write_rel_file( "$name/templates/" . lc( $resource ) . "/$action.html.$opts{handler}",
+        "It's action #$action" );
     }
   }
 
@@ -342,10 +338,6 @@ USAGE
 =head1 NAME
 
 Mojolicious::Command::am - Generic L<Mojolicious> app, controllers, models, helpers, views
-
-=head1 VERSION
-
-0.02
 
 =head1 SYNOPSIS
 
